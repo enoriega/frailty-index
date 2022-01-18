@@ -1,0 +1,21 @@
+.evidence_pane {
+	width: 100%;
+	min-height: 20vh;
+	z-index: 0;
+	/*position: fixed;*/
+	left: 0;
+	bottom: 0;
+	padding: 1em;
+	margin: 0;
+	background-color:rgba(207,207,196, 0.5);
+	border-radius: 25px;
+	/*height: 87%;*/
+	/*position:fixed;*/
+   /*left:0px;*/
+   /* top:13%;*/
+   /* overflow: scroll;*/
+}
+
+.selected {
+	background-color: yellow;
+}

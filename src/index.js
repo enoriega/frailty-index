@@ -1,17 +1,50 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import {
+	BrowserRouter,
+	Routes,
+	Route
+  } from "react-router-dom"
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import EvidenceIndex from './EvidenceIndex';
+import ScrollToTop from './components/ScrollToTop';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+function Overview(){
+	return <h1>Overview</h1>
+}
+
+function NetworkViz(){
+	return <h1>NetworkViz</h1>
+}
+  
+// ========================================
+const rootElement = document.getElementById('root');
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+	<BrowserRouter>
+		<Routes>
+			<Route path="/" element={<App />}>
+				<Route path="overview" element={<Overview />} />
+				<Route path="viz" element={<NetworkViz />} />
+				<Route path="evidence-index" element={
+					<>
+						<EvidenceIndex apiUrl="http://localhost:1600" defaultResults={ 100 } />
+						<ScrollToTop />
+					</>
+				} />
+				<Route
+					path="*"
+					element={
+						<main style={{ padding: "1rem" }}>
+						<p>There's nothing here!</p>
+						</main>
+					}
+				/>
+			</Route>
+		</Routes>
+	</BrowserRouter>,
+	rootElement
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+  
