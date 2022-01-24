@@ -7,13 +7,12 @@ import {
   } from "react-router-dom"
 import App from './App';
 import EvidenceIndex from './EvidenceIndex';
+import Overview from './Overview';
 import ScrollToTop from './components/ScrollToTop';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function Overview(){
-	return <h1>Overview</h1>
-}
+
 
 function NetworkViz(){
 	return <h1>NetworkViz</h1>
@@ -26,7 +25,10 @@ ReactDOM.render(
 	<BrowserRouter>
 		<Routes>
 			<Route path="/" element={<App />}>
-				<Route path="overview" element={<Overview />} />
+				<Route path="overview" element={<Overview 
+					apiUrl="http://localhost:1600"
+					entityId="uniprot:P05231"
+					entityName="IL-6" />} />
 				<Route path="viz" element={<NetworkViz />} />
 				<Route path="evidence-index" element={
 					<>
