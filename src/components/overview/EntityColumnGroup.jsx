@@ -39,7 +39,7 @@ export default class EntityColumnGroup extends React.Component {
 			var contents = <></>;
 		}
 
-		const chevron = expanded ? <i class="gg-chevron-double-up" /> : <i className="gg-chevron-double-down" />;
+		const chevron = expanded ? <i className="gg-chevron-double-up" /> : <i className="gg-chevron-double-down" />;
 
 		return (
 			<li key={groupName}>

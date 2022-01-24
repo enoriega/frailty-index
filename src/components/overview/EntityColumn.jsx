@@ -1,5 +1,6 @@
 import EntityColumnGroup from "./EntityColumnGroup";
 import "./EntityColumn.css"
+import "../../Chevron.css"
 import React from "react";
 import { useState } from "react";
 
@@ -31,10 +32,10 @@ export default function EntityColumn({ title, data, sorter, grouper }){
 				const innerItems =
 					groupedData[group].map(
 						item => {
-							const {id, name, freq, meta} = item;
+							const {id, name, freq, weight} = item;
 							return (
 								<li key={id} className="entity_column_item">
-									<a href="#">{`${name} (${id})`}</a> - {freq}
+									<a href="#">{`${name} (${id})`}</a> - F: {freq} - W: {weight.toFixed(2)}
 								</li>
 							);
 					});
@@ -56,7 +57,7 @@ export default function EntityColumn({ title, data, sorter, grouper }){
 			}
 		);
 
-		const chevron = isExpanded ? <i class="gg-chevron-double-up" /> : <i className="gg-chevron-double-down" />;
+		const chevron = isExpanded ? <i className="gg-chevron-double-up" /> : <i className="gg-chevron-double-down" />;
 
 
 	return (

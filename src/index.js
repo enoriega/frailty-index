@@ -11,6 +11,7 @@ import Overview from './Overview';
 import ScrollToTop from './components/ScrollToTop';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
 
 
 

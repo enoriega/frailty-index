@@ -4,6 +4,7 @@ import { getOverviewData } from "./utils/api"
 import customWeight from './utils/custom_weight';
 import { getEntityCategory, groupBy } from './utils/utils';
 import { Container, Row, Col, Form } from 'react-bootstrap'
+import WeightPanel from './components/weight/WeightPanel';
 
 function filterItems(items, shouldContain){
 	if(shouldContain){
@@ -44,7 +45,7 @@ function sortByFrequency(a, b){
 }
 
 function sortByCustomWeight(a, b){
-	return -(customWeight(a.meta) - customWeight(b.meta));
+	return -(a.weight - b.weight);
 }
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -76,11 +77,38 @@ export default function Overview({apiUrl, entityId, entityName}){
 	const [orderCriterion, setOrderCritertion] = useState(1);
 	const [shouldContain, setShouldContain] = useState('');
 
+	const [weightValues, setWeightValues] = useState({
+		frequency: 1,
+		hasSignificance: 1,
+		avgSignificance: 1,
+		avgImpactFactor: 1,
+		maxImpactFactor: 1,
+		pValue: 1,
+	});
+
+	// Define a function to update the weight values on the state AND save them to local storage
+	function saveAndSetWeightValues(newWeightValues){
+		localStorage.setItem('overviewWeightValues', JSON.stringify(newWeightValues));
+		setWeightValues(newWeightValues);
+	}
+
+	// Side effect to load the weight values from local storage
+	useEffect(() => {
+		const storedWeightValues = JSON.parse(localStorage.getItem('overviewWeightValues'));
+		if(storedWeightValues){
+			setWeightValues(storedWeightValues);
+		}
+	}, []); // Use this empty array to make sure the effect is only run once
+
 	// Filter the data by the shouldContain variable either by name or id
 	influenced = filterItems(influenced, shouldContain);
 	influencers = filterItems(influencers, shouldContain);
 	reciprocals = filterItems(reciprocals, shouldContain);
 
+	// Compute the custom weight for each item and use this value troughtout the current render
+	influencers.forEach(item => {item.weight = customWeight({...item.meta, freq:item.freq}, weightValues)});
+	influenced.forEach(item => {item.weight = customWeight({...item.meta, freq:item.freq}, weightValues)});
+	reciprocals.forEach(item => {item.weight = customWeight({...item.meta, freq:item.freq}, weightValues)});
 	
 
 	useEffect(() => {
@@ -157,6 +185,8 @@ export default function Overview({apiUrl, entityId, entityName}){
 					</Col>
 				</Row>
 			</Form>
+			<br />
+			<WeightPanel sliderValues={weightValues} setSliderValues={saveAndSetWeightValues} />
 			<br />
 			<Container fluid>
 				<Row>
