@@ -1,24 +1,54 @@
-import { useState } from "react";
+import React from "react";
+import "./EntityColumn.css";
 
-export default function EntityColumnGroup({groupName, items}){
-	const [isExpanded, setExpanded] = useState(true);
-	let header = `${groupName} - (${items.length})`;
+export default class EntityColumnGroup extends React.Component {
 
-	if(isExpanded){
-		header += " ^";
-		var contents = <ul>{items}</ul>;
-	}
-	else{
-		header += " v";
-		var contents = <></>;
+	constructor(props){
+		super(props);
+		this.state = {
+			expanded: true
+		};
 	}
 
-	return (
-		<li key={groupName}>
-			<h3 
-				className="overview_column_group"
-				onClick={() => setExpanded(!isExpanded)}>{header}</h3>
-			{contents}
-		</li>
-	);
+	toggleExpand = () => {
+		const expanded = this.state.expanded;
+		if(expanded)
+			this.collapse();
+		else
+			this.expand();
+	}
+
+	expand = () => {
+		this.setState({expanded: true});
+	}
+
+	collapse = () => {
+		this.setState({expanded: false});
+	}
+
+	render = () => {
+		const {groupName, items} = this.props;
+		const {expanded} = this.state;
+
+		let header = `${groupName} - (${items.length})`;
+
+		if(expanded){
+			var contents = <ul>{items}</ul>;
+		}
+		else{
+			var contents = <></>;
+		}
+
+		const chevron = expanded ? <i class="gg-chevron-double-up" /> : <i className="gg-chevron-double-down" />;
+
+		return (
+			<li key={groupName}>
+				<h3 
+					className="entity_column_category"
+					onClick={this.toggleExpand}>{header}<div className="chevron">{chevron}</div></h3>
+				{contents}
+			</li>
+		);
+	}
+	
 }

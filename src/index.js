@@ -25,10 +25,16 @@ ReactDOM.render(
 	<BrowserRouter>
 		<Routes>
 			<Route path="/" element={<App />}>
-				<Route path="overview" element={<Overview 
-					apiUrl="http://localhost:1600"
-					entityId="uniprot:P05231"
-					entityName="IL-6" />} />
+				<Route path="overview" element={
+					<>
+						<Overview 
+							apiUrl="http://localhost:1600"
+							entityId="uniprot:P05231"
+							entityName="IL-6" />
+						
+						<ScrollToTop />
+					</>}
+				/>
 				<Route path="viz" element={<NetworkViz />} />
 				<Route path="evidence-index" element={
 					<>

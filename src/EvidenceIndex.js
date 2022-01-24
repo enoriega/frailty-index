@@ -3,7 +3,6 @@ import { Form, FloatingLabel, Alert, InputGroup } from "react-bootstrap";
 import { Row, Col } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import EvidencePanel from "./components/EvidencePanel";
-import ScrollToTop from "./components/ScrollToTop";
 import './index_interface.css';
 
 class QueryBox extends React.Component {

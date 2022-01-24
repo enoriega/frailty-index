@@ -16,6 +16,57 @@ function filterItems(items, shouldContain){
 		return items;
 }
 
+// Ad hoc function to transform data from arrays to objects
+function array2obj(data){
+	return data.map(
+		item => {
+			return	{ 
+				id: item[0],
+				name: item[1],
+				freq: item[2],
+				meta: item[3]
+			};
+		}
+	)
+}
+
+// Sorting functions
+function sortByEntityName(a, b){
+	return (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1;
+}
+
+function sortByEntityId(a, b){
+	return (a.id > b.id) ? 1 : -1;
+}
+
+function sortByFrequency(a, b){
+	return -(a.freq - b.freq);
+}
+
+function sortByCustomWeight(a, b){
+	return -(customWeight(a.meta) - customWeight(b.meta));
+}
+////////////////////////////////////////////////////////////////////////////////
+
+// Group the elements by their entity type
+const categories = {
+	"uniprot": "Proteins or Gene Products",
+	"mesh": "Diseases",
+	"go": "Biological Process",
+	"fplx": "Proteins or Gene Products",
+	"pubchem": "Chemicals",
+	"interpro": "Proteins or Gene Products",
+	"proonto": "Proteins or Gene Products",
+	"chebi": "Chemicals",
+	"pfam": "Proteins or Gene Products",
+	"frailty": "Biological Process"
+}
+
+function groupByEntityType(items){
+	return groupBy(items, item => categories[getEntityCategory(item.id)]);
+}
+//////////////////////////////////////////
+
 export default function Overview({apiUrl, entityId, entityName}){
 
 	let [reciprocals, setReciprocals] = useState([]);
@@ -30,19 +81,7 @@ export default function Overview({apiUrl, entityId, entityName}){
 	influencers = filterItems(influencers, shouldContain);
 	reciprocals = filterItems(reciprocals, shouldContain);
 
-	// Ad hoc function to transform data from arrays to objects
-	function array2obj(data){
-		return data.map(
-			item => {
-				return	{ 
-					id: item[0],
-					name: item[1],
-					freq: item[2],
-					meta: item[3]
-				};
-			}
-		)
-	}
+	
 
 	useEffect(() => {
 		// Fetch the Overview data from the API
@@ -56,22 +95,7 @@ export default function Overview({apiUrl, entityId, entityName}){
 	}, []); // Second argument necessary to make sure the effect is only called once
 
 
-	// Sorting functions
-	function sortByEntityName(a, b){
-		return (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1;
-	}
-
-	function sortByEntityId(a, b){
-		return (a.id > b.id) ? 1 : -1;
-	}
-
-	function sortByFrequency(a, b){
-		return -(a.freq - b.freq);
-	}
-
-	function sortByCustomWeight(a, b){
-		return -(customWeight(a.meta) - customWeight(b.meta));
-	}
+	
 
 	let sorter;
 	switch(orderCriterion){
@@ -90,27 +114,6 @@ export default function Overview({apiUrl, entityId, entityName}){
 		default:
 			throw `Invalid order criterion: ${orderCriterion}`;
 	}
-
-	////////////////////////
-
-	// Group the elements by their entity type
-	const categories = {
-		"uniprot": "Proteins or Gene Products",
-		"mesh": "Diseases",
-		"go": "Biological Process",
-		"fplx": "Proteins or Gene Products",
-		"pubchem": "Chemicals",
-		"interpro": "Proteins or Gene Products",
-		"proonto": "Proteins or Gene Products",
-		"chebi": "Chemicals",
-		"pfam": "Proteins or Gene Products",
-		"frailty": "Biological Process"
-	}
-
-	function groupByEntityType(items){
-		return groupBy(items, item => categories[getEntityCategory(item.id)]);
-	}
-	//////////////////////////////////////////
 	
 
 	return (

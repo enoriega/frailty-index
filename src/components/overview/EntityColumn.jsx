@@ -1,6 +1,11 @@
 import EntityColumnGroup from "./EntityColumnGroup";
+import "./EntityColumn.css"
+import React from "react";
+import { useState } from "react";
 
 export default function EntityColumn({ title, data, sorter, grouper }){
+
+	const [isExpanded, setExpanded] = useState(true);
 	
 	// Assume sorter implements a stable sort
 	if(sorter){
@@ -17,6 +22,8 @@ export default function EntityColumn({ title, data, sorter, grouper }){
 	// Sort the groups to keep a consistent order when changhing the sort criteria
 	let groupNames = Object.keys(groupedData).sort();
 
+	let refs = [];
+
 	// Render the list either as grouped or plain depending on the grouper
 	const listItems =
 		groupNames.flatMap(
@@ -26,16 +33,22 @@ export default function EntityColumn({ title, data, sorter, grouper }){
 						item => {
 							const {id, name, freq, meta} = item;
 							return (
-								<li key={id}>
+								<li key={id} className="entity_column_item">
 									<a href="#">{`${name} (${id})`}</a> - {freq}
 								</li>
 							);
 					});
 
 				if(group){
-					return <EntityColumnGroup key={group}
-					groupName={group}
-					items={innerItems} />
+					const ref =  React.createRef();
+					refs.push(ref);
+
+					return <EntityColumnGroup 
+							key={group}
+							ref={ref}
+							groupName={group}
+							toggleExpand={isExpanded}
+							items={innerItems} />;
 				}
 				else
 					return innerItems;
@@ -43,13 +56,27 @@ export default function EntityColumn({ title, data, sorter, grouper }){
 			}
 		);
 
+		const chevron = isExpanded ? <i class="gg-chevron-double-up" /> : <i className="gg-chevron-double-down" />;
+
 
 	return (
-		<>
-			<h2>{title}</h2>
-			<ul>
+		<div className="entity_column">
+			<h2 
+				className="entity_column_title"
+				onClick={() => {
+					// Imperatively change the state of the children panels
+					if(isExpanded)
+						refs.forEach(ref => ref.current.collapse());
+					else
+						refs.forEach(ref => ref.current.expand());
+					setExpanded(!isExpanded)
+				}}>
+				{title} 
+				<span className="chevron">{chevron}</span>
+			</h2>
+			<ul className="entity_column_contents">
 				{listItems}
 			</ul>
-		</>
+		</div>
 	)
 }
