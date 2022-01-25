@@ -22,7 +22,7 @@ ReactDOM.render(
 	<BrowserRouter>
 		<Routes>
 			<Route path="/" element={<App />}>
-				<Route path="overview" element={
+				<Route index element={
 					<>
 						<Overview 
 							apiUrl="http://localhost:1600"

@@ -276,9 +276,22 @@ export default function NetworkViz({ apiUrl }){
 					</Row>
 				}
 			/>
-			<CytoscapeComponent style={{width:"100vh", height:"100vh"}} cy={(c) => { cyRef.current = c }}
-				elements={elements} layout={layoutInitialOpts} zoom={1} stylesheet={stylesheet(weightCoefficients)}
-			/>
+			{/* <Row>
+				<Col> */}
+				<CytoscapeComponent 
+					style={{
+						height:"90vh",
+						marginRight: "1em",
+						margin: ".8em",
+						backgroundColor: "white",
+						borderRadius: "10px",
+						boxShadow: "#929292 0px 0px 10px"
+					}}
+					cy={(c) => { cyRef.current = c }}
+					elements={elements} layout={layoutInitialOpts} zoom={1} stylesheet={stylesheet(weightCoefficients)}
+				/>
+				{/* </Col>
+			</Row> */}
 			{ isEvidenceOpen && 
 			 <EvidencePanel items={evidenceItems} header={
 				<h3 ref={evidence}>Evidence: 
