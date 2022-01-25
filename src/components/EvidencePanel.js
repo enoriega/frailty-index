@@ -1,20 +1,7 @@
 import React from "react";
 import EvidenceTaggerPanel from "./EvidenceTaggerPanel";
+import EvidenceItem from "./evidence_panel/EvidenceItem";
 import "./evidence_panel.css";
-
-function EvidenceItem(props) {
-    const pattern =  /PMC\d+/;
-    const matches = props.hyperlink.match(pattern);
-
-    const linkText = matches ? matches[0] : "Source";
-	
-    return (
-        <li className={props.highlighted?"selected":""}>
-            {props.impact !== null?`(${props.impact.toFixed(2)})`:""} <a href={props.hyperlink} target="_blank">{linkText}</a>: {' '}
-			<span dangerouslySetInnerHTML={{__html: props.markup}} onClick={props.onClick} />
-        </li>
-    )
-}
 
 function checkLabel(props){
 	let source = props.source
@@ -67,10 +54,14 @@ export default function EvidencePanel(props) {
 
 	const items = props.items.map((i, ix) => {
 
+		// Build the link to the network view
+		const urlPath = `/viz?src=${i.source}&dst=${i.destination}&bidirect`
+
 		return (<EvidenceItem 
 			key={ix}
 			markup={i.markup}
 			hyperlink={i.hyperlink}
+			vizPath={i.source && urlPath} // Will assign the vizPath only if the source is not null
 			sentence={i.rawSentence}
 			impact={i.impact}
 			highlighted={highlightedSentence === ix}

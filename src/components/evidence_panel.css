@@ -22,3 +22,8 @@
 .selected {
 	background-color: yellow;
 }
+
+.injected_link{
+	color: black;
+	text-decoration: none;
+}
