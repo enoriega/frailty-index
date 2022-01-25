@@ -8,16 +8,12 @@ import {
 import App from './App';
 import EvidenceIndex from './EvidenceIndex';
 import Overview from './Overview';
+import NetworkViz from './NetworkViz';
 import ScrollToTop from './components/ScrollToTop';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
 
-
-
-function NetworkViz(){
-	return <h1>NetworkViz</h1>
-}
   
 // ========================================
 const rootElement = document.getElementById('root');
@@ -36,7 +32,12 @@ ReactDOM.render(
 						<ScrollToTop />
 					</>}
 				/>
-				<Route path="viz" element={<NetworkViz />} />
+				<Route path="viz" element={
+					<>
+						<NetworkViz
+							apiUrl="http://localhost:1600" />
+						<ScrollToTop />
+					</>} />
 				<Route path="evidence-index" element={
 					<>
 						<EvidenceIndex apiUrl="http://localhost:1600" defaultResults={ 100 } />

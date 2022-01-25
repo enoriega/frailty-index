@@ -4,7 +4,7 @@ import "../../Chevron.css"
 import React from "react";
 import { useState } from "react";
 
-export default function EntityColumn({ title, data, sorter, grouper }){
+export default function EntityColumn({ title, data, sorter, grouper, anchor }){
 
 	const [isExpanded, setExpanded] = useState(true);
 	
@@ -35,7 +35,7 @@ export default function EntityColumn({ title, data, sorter, grouper }){
 							const {id, name, freq, weight} = item;
 							return (
 								<li key={id} className="entity_column_item">
-									<a href="#">{`${name} (${id})`}</a> - F: {freq} - W: {weight.toFixed(2)}
+									<a href={`/viz?src=${anchor}&dst=${id}&bidirect`}>{`${name} (${id})`}</a> - F: {freq} - W: {weight.toFixed(2)}
 								</li>
 							);
 					});

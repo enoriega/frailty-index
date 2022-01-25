@@ -10,7 +10,7 @@ function EvidenceItem(props) {
 	
     return (
         <li className={props.highlighted?"selected":""}>
-            {props.impact !== null?`(${props.impact.toFixed(2)})`:""} <a href={props.hyperlink} target="_blank">{linkText}</a>: 
+            {props.impact !== null?`(${props.impact.toFixed(2)})`:""} <a href={props.hyperlink} target="_blank">{linkText}</a>: {' '}
 			<span dangerouslySetInnerHTML={{__html: props.markup}} onClick={props.onClick} />
         </li>
     )
@@ -135,8 +135,10 @@ export default function EvidencePanel(props) {
 
 	return (
 		<div>
+			
 			{taggerPanel}
 			<div className="evidence_pane">
+			{ props.header }
 				<ul>
 					{items}
 				</ul>

@@ -192,9 +192,10 @@ export default function Overview({apiUrl, entityId, entityName}){
 				<Row>
 					<Col>
 					<EntityColumn title="Infenceced By:" 
-						data={influencers}
+						data={influenced}
 						sorter={sorter}
 						grouper={groupByEntityType}
+						anchor={entityId}
 						/>
 					</Col>
 					<Col>
@@ -202,13 +203,15 @@ export default function Overview({apiUrl, entityId, entityName}){
 							data={reciprocals}
 							sorter={sorter}
 							grouper={groupByEntityType}
+							anchor={entityId}
 							/>
 					</Col>
 					<Col>
 						<EntityColumn title="Influence:" 
-							data={influenced}
+							data={influencers}
 							sorter={sorter}
 							grouper={groupByEntityType}
+							anchor={entityId}
 							/>
 					</Col>
 				 </Row>

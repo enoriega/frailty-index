@@ -4,9 +4,7 @@ export function generateLatexCode(coefficients){
 
     const {
 		frequency, hasSignificance, avgSignificance, avgImpactFactor, maxImpactFactor, pValue
-	}  = coefficients
-
-	
+	}  = coefficients;
 
     let latex = `\\begin{equation}
                         \\begin{aligned}
@@ -21,8 +19,8 @@ export function generateLatexCode(coefficients){
 
 export default function LatexFormula({ coefficients }){
 
-
 	const latex = generateLatexCode(coefficients);
+	
 	return (
 		<MathJaxContext>
 			<div className="latex-formula"><MathJax dynamic={true}>{ latex }</MathJax></div>
