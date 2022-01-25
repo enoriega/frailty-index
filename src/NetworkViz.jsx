@@ -3,9 +3,9 @@ import Cytoscape from 'cytoscape';
 import CytoscapeComponent from "react-cytoscapejs";
 import klay from 'cytoscape-klay';
 import { useEffect, useRef, useState, useMemo } from "react";
-import { getInteraction, fetchEvidence, fetchNeighbots } from './utils/api';
+import { getInteraction, fetchEvidence, fetchNeighbots, saveCoefficients } from './utils/api';
 import EvidencePanel from './components/EvidencePanel';
-import { Button, Spinner } from 'react-bootstrap';
+import { Button, Spinner, Row, Col, Container } from 'react-bootstrap';
 import WeightPanel from './components/weight/WeightPanel';
 import customWeight from './utils/custom_weight';
 import "./NetworkViz.css";
@@ -108,6 +108,12 @@ export default function NetworkViz({ apiUrl }){
 
 	const query = useQuery();
 
+	// Define a function to update the weight values on the state AND save them to local storage
+	function saveAndSetWeightValues(newWeightValues){
+		localStorage.setItem('networkWeightValues', JSON.stringify(newWeightValues));
+		setWeightCoefficients(newWeightValues);
+	}
+
 	const  pattern = /^.+ \(([^\(\)]+)\)$/
 	let source = query.get("src")
 	let destination = query.get("dst")
@@ -117,6 +123,14 @@ export default function NetworkViz({ apiUrl }){
 	}
 	if(pattern.test(destination))
 		destination = destination.match(pattern)[1]
+
+	// Side effect to load the weight values from local storage
+	useEffect(() => {
+		const storedWeightValues = JSON.parse(localStorage.getItem('networkWeightValues'));
+		if(storedWeightValues){
+			setWeightCoefficients(storedWeightValues);
+		}
+	}, []); // Use this empty array to make sure the effect is only run once
 
 	useEffect(() => {
 		// Initial fetch of the data
@@ -245,7 +259,23 @@ export default function NetworkViz({ apiUrl }){
 	return (
 		<>
 			{isLoading && <Spinner animation="border" variant="danger" className='loading'/>}
-			<WeightPanel sliderValues={weightCoefficients} setSliderValues={setWeightCoefficients} />
+			<WeightPanel 
+				sliderValues={weightCoefficients}
+				setSliderValues={saveAndSetWeightValues}
+				footer={
+					<Row>
+						<Col style={{textAlign: "center"}}>
+							<Button 
+							 onClick={
+								 () => {
+									 
+									saveCoefficients(apiUrl, window.location.search, weightCoefficients)
+								 }
+							 }>Record weights</Button>
+						</Col>
+					</Row>
+				}
+			/>
 			<CytoscapeComponent style={{width:"100vh", height:"100vh"}} cy={(c) => { cyRef.current = c }}
 				elements={elements} layout={layoutInitialOpts} zoom={1} stylesheet={stylesheet(weightCoefficients)}
 			/>

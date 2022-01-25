@@ -1,10 +1,11 @@
 import SliderComponent from './SliderComponent';
 import LatexFormula from './LatexFormula';
 import { useState } from 'react';
+import { Button } from 'react-bootstrap';
 import  "./WeightPanel.css";
 
 
-export default function WeightPanel({ sliderValues, setSliderValues }){
+export default function WeightPanel({ sliderValues, setSliderValues, footer }){
 	const [isExpanded, setExpanded] = useState(false);
 
 	const chevron = isExpanded ? <i className="gg-chevron-double-up" /> : <i className="gg-chevron-double-down" />;
@@ -29,6 +30,9 @@ export default function WeightPanel({ sliderValues, setSliderValues }){
 					<SliderComponent label='1 - Avg p-value' value={sliderValues.pValue} onChange={v => sliderStateUpdate('pValue', v)} />
 					
 				</div>
+				{
+					(footer) && footer
+				}
 			</>
 		);
 	else
@@ -43,6 +47,7 @@ export default function WeightPanel({ sliderValues, setSliderValues }){
 			Weighting<span className="chevron">{chevron}</span></h2>
 			
 			{elements}
+			
 		</div>
 	)
 }
